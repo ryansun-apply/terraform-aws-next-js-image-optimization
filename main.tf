@@ -175,7 +175,7 @@ locals {
     target_origin_id         = local.cloudfront_origin.origin_id
     viewer_protocol_policy   = "redirect-to-https"
     compress                 = true
-    origin_request_policy_id = var.cloudfront_origin_request_policy != null ? data.aws_cloudfront_origin_request_policy.this_origin[0].id : aws_cloudfront_origin_request_policy.this[0].id
+    origin_request_policy_id = var.cloudfront_origin_request_policy_name != null ? data.aws_cloudfront_origin_request_policy.this_origin[0].id : aws_cloudfront_origin_request_policy.this[0].id
     cache_policy_id          = var.cloudfront_cache_policy_name != null ? data.aws_cloudfront_cache_policy.this_cache[0].id : aws_cloudfront_cache_policy.this[0].id
 
   }
