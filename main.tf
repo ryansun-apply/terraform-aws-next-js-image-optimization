@@ -175,12 +175,18 @@ locals {
     target_origin_id         = local.cloudfront_origin.origin_id
     viewer_protocol_policy   = "redirect-to-https"
     compress                 = true
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.this.id
-    cache_policy_id          = aws_cloudfront_cache_policy.this.id
+    origin_request_policy_id = var.cloudfront_origin_request_policy != null ? data.aws_cloudfront_origin_request_policy.this_origin[0].id : aws_cloudfront_origin_request_policy.this[0].id
+    cache_policy_id          = var.cloudfront_cache_policy_name != null ? data.aws_cloudfront_cache_policy.this_cache[0].id : aws_cloudfront_cache_policy.this[0].id
+
   }
 }
 
+data "aws_cloudfront_origin_request_policy" "this_origin" {
+  count = var.cloudfront_origin_request_policy_name != null ? 1 : 0
+  name = var.cloudfront_origin_request_policy_name
+}
 resource "aws_cloudfront_origin_request_policy" "this" {
+  count = var.cloudfront_origin_request_policy_name == null ? 0 : 1
   name    = "${var.deployment_name}_request"
   comment = "Managed by Terraform Next.js image optimizer"
 
@@ -203,7 +209,14 @@ resource "aws_cloudfront_origin_request_policy" "this" {
   }
 }
 
+#If Cache Policy Name has been given, get info 
+data "aws_cloudfront_cache_policy" "this_cache" {
+  count = var.cloudfront_cache_policy_name != null ? 1 : 0
+  name  = var.cloudfront_cache_policy_name
+}
+# If no cache policy name is given, defaults to null and create resource
 resource "aws_cloudfront_cache_policy" "this" {
+  count   = var.cloudfront_cache_policy_name == null ? 1 : 0
   name    = "${var.deployment_name}_image-cache"
   comment = "Managed by Terraform Next.js image optimizer"
 

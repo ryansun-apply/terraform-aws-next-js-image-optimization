@@ -129,6 +129,18 @@ variable "cloudfront_origin_id" {
   default     = "tf-next-image-optimizer"
 }
 
+variable "cloudfront_cache_policy_name" {
+  description = "Name of Cache policy to apply for Image Optmizer CF"
+  type        = string
+  default     = null
+}
+
+variable "cloudfront_origin_request_policy_name" {
+  description = "Id of a custom cache policy that overrides creation."
+  type        = string
+  default     = null
+}
+
 ##########
 # Labeling
 ##########
