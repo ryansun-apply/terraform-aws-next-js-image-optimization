@@ -30,5 +30,5 @@ output "cloudfront_origin_request_policy_id" {
 
 output "cloudfront_cache_policy_id" {
   description = "Cache policy id used for image optimization."
-  value       = aws_cloudfront_cache_policy.thi[0].id
+  value       = aws_cloudfront_cache_policy.this[0].id
 }
